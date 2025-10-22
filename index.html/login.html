@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EarnNow</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1E3A8A;
+            --accent: #FACC15;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, #2d4ba8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .login-container {
+            max-width: 450px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: white;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+            color: #212529;
+            border-color: var(--accent);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(30, 58, 138, 0.25);
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-coins me-2"></i>EarnNow
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="index.html"><i class="fas fa-arrow-left me-1"></i>Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="container">
+        <div class="login-container">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Welcome Back</h2>
+                <p class="text-muted">Sign in to your EarnNow account</p>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="loginEmail" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="loginEmail" required>
+                </div>
+                <div class="mb-3">
+                    <label for="loginPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" required>
+                </div>
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+                </div>
+            </form>
+            
+            <div class="text-center mb-4">
+                <span class="text-muted">Don't have an account?</span>
+            </div>
+            
+            <!-- Signup Form -->
+            <form id="signupForm">
+                <div class="mb-3">
+                    <label for="signupName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="signupName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="signupEmail" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="signupEmail" required>
+                </div>
+                <div class="mb-3">
+                    <label for="signupPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signupPassword" required minlength="6">
+                    <div class="form-text">Password must be at least 6 characters long.</div>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-accent btn-lg">Create Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- Login/Signup Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    // User is signed in, check role and redirect
+                    checkUserRole(user.uid);
+                }
+            });
+            
+            // Login form submission
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        // Signed in
+                        const user = userCredential.user;
+                        showToast('Login successful!', 'success');
+                        
+                        // Check user role and redirect
+                        checkUserRole(user.uid);
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        showToast('Login failed: ' + errorMessage, 'danger');
+                    });
+            });
+            
+            // Signup form submission
+            document.getElementById('signupForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                
+                firebase.auth().createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        // Signed up
+                        const user = userCredential.user;
+                        
+                        // Create user document in Firestore
+                        return db.collection('users').doc(user.uid).set({
+                            name: name,
+                            email: email,
+                            role: 'user',
+                            balance: 0,
+                            totalEarnings: 0,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    })
+                    .then(() => {
+                        showToast('Account created successfully!', 'success');
+                        
+                        // Check user role and redirect
+                        checkUserRole(firebase.auth().currentUser.uid);
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        showToast('Signup failed: ' + errorMessage, 'danger');
+                    });
+            });
+            
+            // Function to check user role and redirect accordingly
+            function checkUserRole(uid) {
+                db.collection('users').doc(uid).get()
+                    .then((doc) => {
+                        if (doc.exists) {
+                            const userData = doc.data();
+                            
+                            if (userData.role === 'admin') {
+                                window.location.href = 'admin.html';
+                            } else {
+                                window.location.href = 'dashboard.html';
+                            }
+                        } else {
+                            showToast('User data not found', 'warning');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error getting user document:', error);
+                        showToast('Error checking user role', 'danger');
+                    });
+            }
+            
+            // Toast function
+            function showToast(message, type = 'info') {
+                const toastContainer = document.getElementById('toastContainer');
+                const toastId = 'toast-' + Date.now();
+                
+                const toastHTML = `
+                    <div id="${toastId}" class="toast align-items-center text-bg-${type} border-0" role="alert">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                ${message}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                        </div>
+                    </div>
+                `;
+                
+                toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+                
+                const toastElement = document.getElementById(toastId);
+                const toast = new bootstrap.Toast(toastElement);
+                toast.show();
+                
+                // Remove toast from DOM after it's hidden
+                toastElement.addEventListener('hidden.bs.toast', function() {
+                    toastElement.remove();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EarnNow - Earn Money Online Easily</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1E3A8A;
+            --accent: #FACC15;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #198754;
+            --danger: #dc3545;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fb;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+            color: var(--dark);
+            border-color: var(--accent);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d4ba8 100%);
+            color: white;
+            padding: 100px 0;
+            border-radius: 0 0 30px 30px;
+        }
+        
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .earner-card {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .earner-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: rgba(30, 58, 138, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .login-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: white;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .balance-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .action-btn {
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0,0,0,0.1);
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .admin-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .referral-link {
+            background-color: #f8f9fa;
+            border: 1px dashed #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 0;
+                text-align: center;
+            }
+            
+            .stats-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-coins me-2"></i>EarnNow
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin.html">Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h1 class="display-4 fw-bold mb-4">Earn Money Online Easily with EarnNow</h1>
+                    <p class="lead mb-4">Join thousands of users who are earning daily by completing simple tasks, watching ads, and referring friends.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="login.html" class="btn btn-accent btn-lg px-4 py-2">
+                            <i class="fas fa-user-plus me-2"></i>Sign Up Free
+                        </a>
+                        <a href="login.html" class="btn btn-outline-light btn-lg px-4 py-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <img src="https://via.placeholder.com/600x400" alt="Earn Money Online" class="img-fluid rounded-3 shadow">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col">
+                    <h2 class="fw-bold">Why Choose EarnNow?</h2>
+                    <p class="text-muted">Join the fastest growing earning platform online</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up">
+                    <div class="stats-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="stats-number">50,000+</h3>
+                        <p class="text-muted">Active Users</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stats-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h3 class="stats-number">$2.5M+</h3>
+                        <p class="text-muted">Paid to Users</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stats-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="stats-number">120+</h3>
+                        <p class="text-muted">Countries</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Earners Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col">
+                    <h2 class="fw-bold">Our Top Earners</h2>
+                    <p class="text-muted">See how much our top users are earning monthly</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3" data-aos="zoom-in">
+                    <div class="card earner-card">
+                        <div class="earner-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h5>Alex Johnson</h5>
+                        <p class="text-muted">United States</p>
+                        <div class="fw-bold text-success">$1,250</div>
+                        <small class="text-muted">This Month</small>
+                    </div>
+                </div>
+                <div class="col-md-3" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="card earner-card">
+                        <div class="earner-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h5>Maria Garcia</h5>
+                        <p class="text-muted">Spain</p>
+                        <div class="fw-bold text-success">$980</div>
+                        <small class="text-muted">This Month</small>
+                    </div>
+                </div>
+                <div class="col-md-3" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="card earner-card">
+                        <div class="earner-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h5>James Smith</h5>
+                        <p class="text-muted">United Kingdom</p>
+                        <div class="fw-bold text-success">$1,120</div>
+                        <small class="text-muted">This Month</small>
+                    </div>
+                </div>
+                <div class="col-md-3" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="card earner-card">
+                        <div class="earner-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h5>Sarah Chen</h5>
+                        <p class="text-muted">Australia</p>
+                        <div class="fw-bold text-success">$890</div>
+                        <small class="text-muted">This Month</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col">
+                    <h2 class="fw-bold">How It Works</h2>
+                    <p class="text-muted">Start earning in just 3 simple steps</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up">
+                    <div class="card text-center p-4 h-100">
+                        <div class="feature-icon mx-auto">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h4>1. Create Account</h4>
+                        <p class="text-muted">Sign up for free in less than a minute. No payment required to start.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card text-center p-4 h-100">
+                        <div class="feature-icon mx-auto">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h4>2. Complete Tasks</h4>
+                        <p class="text-muted">Watch ads, take surveys, or complete offers to earn money.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card text-center p-4 h-100">
+                        <div class="feature-icon mx-auto">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h4>3. Get Paid</h4>
+                        <p class="text-muted">Withdraw your earnings via PayPal, bank transfer, or gift cards.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-4">Ready to Start Earning?</h2>
+            <p class="lead mb-4">Join thousands of users earning money online with EarnNow</p>
+            <a href="login.html" class="btn btn-accent btn-lg px-5 py-3">
+                <i class="fas fa-rocket me-2"></i>Get Started Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5><i class="fas fa-coins me-2"></i>EarnNow</h5>
+                    <p>The easiest way to earn money online by completing simple tasks and watching ads.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white-50">Home</a></li>
+                        <li><a href="login.html" class="text-white-50">Login</a></li>
+                        <li><a href="dashboard.html" class="text-white-50">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white-50">Terms of Service</a></li>
+                        <li><a href="#" class="text-white-50">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i>support@earnnow.com</li>
+                        <li><i class="fas fa-phone me-2"></i>+1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 EarnNow. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- App JS -->
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+        
+        // Firebase initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    // User is signed in
+                    document.getElementById('loginNav').innerHTML = 
+                        `<a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>`;
+                } else {
+                    // User is signed out
+                    document.getElementById('loginNav').innerHTML = 
+                        `<a class="nav-link" href="login.html">Login</a>`;
+                }
+            });
+        });
+        
+        // Toast function
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toastId = 'toast-' + Date.now();
+            
+            const toastHTML = `
+                <div id="${toastId}" class="toast align-items-center text-bg-${type} border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            `;
+            
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+            
+            // Remove toast from DOM after it's hidden
+            toastElement.addEventListener('hidden.bs.toast', function() {
+                toastElement.remove();
+            });
+        }
+    </script>
+</body>
+</html>
